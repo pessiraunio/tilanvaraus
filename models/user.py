@@ -1,4 +1,5 @@
 from extensions import db
+from models.room import Room
 
 class User(db.Model):
 
@@ -13,20 +14,4 @@ class User(db.Model):
     updated_at = db.Column(db.DateTime(), nullable=False, server_default=db.func.now(),
     onupdate=db.func.now())
 
-    classrooms = db.relationship('Classroom', backref='user')
-
-    @classmethod
-    def get_by_username(cls, username):
-        return cls.query.filter_by(username=username).first()
-
-    @classmethod
-    def get_by_email(cls, email):
-        return cls.query.filter_by(email=email).first()
-
-    @classmethod
-    def get_by_id(cls, id):
-        return cls.query.filter_by(id=id).first()
-
-    def save(self):
-        db.session.add(self)
-        db.session.commit()
+    rooms = db.relationship('Room', backref='reserver')
