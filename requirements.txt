@@ -1,0 +1,10 @@
+Flask
+Flask-Restful
+httpie
+Flask-SQLAlchemy
+Flask-Migrate
+psycopg2-binary
+passlib
+Flask-JWT-Extended
+marshmallow
+webargs
