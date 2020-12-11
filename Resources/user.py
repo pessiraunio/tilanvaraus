@@ -10,13 +10,13 @@ from models.user import User
 from models.rooms import room
 
 from schemas.user import UserSchema
-from schemas.room import roomSchema
+from schemas.room import RoomSchema
 
 
 user_schema = UserSchema()
 user_public_shema = UserSchema(exclude=('email', ))
 
-room_list_schema = roomSchema(many=True)
+room_list_schema = RoomSchema(many=True)
 
 
 class UserListResource(Resource):
