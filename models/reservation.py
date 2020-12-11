@@ -1,5 +1,6 @@
 from extensions import db
 
+
 class Reservation(db.Model):
     __tablename__ = 'reservation'
 
@@ -12,6 +13,11 @@ class Reservation(db.Model):
     room_id = db.Column(db.Integer(), nullable=False)
 
     user_id = db.Column(db.Integer(), db.ForeignKey("user.id"))
+
+    def data(self):
+        return {'id': self.id, 'description': self.description, 'time': self.time, 'user_id': self.user_id,
+                'room_id': self.room_id}
+
 
     @classmethod
     def get_by_id(cls, id):
