@@ -12,7 +12,7 @@ class Reservation(db.Model):
     updated_at = db.Column(db.DateTime(), nullable=False, server_default=db.func.now(), onupdate=db.func.now())
     room_id = db.Column(db.Integer(), nullable=False)
 
-    user_id = db.Column(db.Integer(), db.ForeignKey("user.id"))
+    roomreservation_id = db.Column(db.Integer(), db.ForeignKey("room.id"))
 
     def data(self):
         return {'id': self.id, 'description': self.description, 'time': self.time, 'user_id': self.user_id,
