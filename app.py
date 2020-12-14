@@ -7,7 +7,7 @@ from extensions import db
 from extensions import jwt
 from resources.user import User, UserListResource, UserResource, UserRoomListResource, MeResource
 from resources.token import TokenResource, RefreshResource, RevokeResource
-from resources.room import RoomListResource, RoomResource
+from resources.room import RoomListResource, RoomResource, RoomListedResource
 
 
 
@@ -48,7 +48,10 @@ def register_resources(app):
 
     api.add_resource(RoomListResource, '/rooms')
     api.add_resource(RoomResource, '/rooms/<int:room_id>')
+    api.add_resource(RoomListedResource, '/rooms/<int:room_id>/listed')
 
+    #api.add_resource(Reservation, /reservations/'huoneenimistring'/'aika string'2.3.2020,32:23.232313<)
+    #lisätään näin ^^
 if __name__ == '__main__':
     app = create_app()
     app.app_context().push()

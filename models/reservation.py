@@ -1,7 +1,10 @@
 from extensions import db
 
 
+#Että tää tuli näkyviin databaseen piti env.py tiedostoon piti lisätä "from models import reservation, room, user"
+
 class Reservation(db.Model):
+    
     __tablename__ = 'reservation'
 
     id = db.Column(db.Integer, primary_key=True)
@@ -12,7 +15,8 @@ class Reservation(db.Model):
     updated_at = db.Column(db.DateTime(), nullable=False, server_default=db.func.now(), onupdate=db.func.now())
     room_id = db.Column(db.Integer(), nullable=False)
 
-    roomreservation_id = db.Column(db.Integer(), db.ForeignKey("room.id"))
+    #roomreservation_id = db.Column(db.Integer(), db.ForeignKey("room.id"))
+    #Linkataan reservatio > user settikeijo Tino tekee
 
     def data(self):
         return {'id': self.id, 'description': self.description, 'time': self.time, 'user_id': self.user_id,
@@ -30,3 +34,5 @@ class Reservation(db.Model):
     def delete(self):
         db.session.delete(self)
         db.session.commit()
+
+# --  Publish takas et näkee onko huoneet saatavilla / korjaukses tms 
