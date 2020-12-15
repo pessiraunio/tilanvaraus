@@ -1,4 +1,5 @@
 from extensions import db
+from models.user import User
 
 
 #Että tää tuli näkyviin databaseen piti env.py tiedostoon piti lisätä "from models import reservation, room, user"
@@ -9,8 +10,8 @@ class Reservation(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String, nullable=False)
     description = db.Column(db.String(200))
-    date = db.Column(db.Date(), nullable=False)
-    time = db.Column(db.Integer, nullabe=False)
+    date = db.Column(db.DateTime(), nullable=False)
+    time = db.Column(db.Integer, nullable=False)
     is_listed = db.Column(db.Boolean, default=True)
     created_at = db.Column(db.DateTime(), nullable=False, server_default=db.func.now())
     updated_at = db.Column(db.DateTime(), nullable=False, server_default=db.func.now(), onupdate=db.func.now())
@@ -20,7 +21,7 @@ class Reservation(db.Model):
 
     def data(self):
         return {'id': self.id, 'name': self.name, 'description': self.description,
-                'date': self.date.strftime("%d/%m/%Y"), 'time': self.time,
+                'date': self.date.strftime("%d/%m/%y"), 'time': self.time,
                 'user': User.get_by_id(self.user_id).username, 'room': self.room}
 
     #roomreservation_id = db.Column(db.Integer(), db.ForeignKey("room.id"))
@@ -50,6 +51,7 @@ class Reservation(db.Model):
     @classmethod
     def get_by_room(cls, room):
         return cls.query.filter_by(room=room).all()
+    
 
     def save(self):
         db.session.add(self)
@@ -59,4 +61,3 @@ class Reservation(db.Model):
         db.session.delete(self)
         db.session.commit()
 
-# --  Publish takas et näkee onko huoneet saatavilla / korjaukses tms 

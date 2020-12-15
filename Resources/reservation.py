@@ -7,6 +7,7 @@ from models.reservation import Reservation
 
 from flask_jwt_extended import get_jwt_identity, jwt_required, jwt_optional
 from datetime import datetime
+from dateutil import parser
 
 
 class ReservationListResource(Resource):
@@ -16,7 +17,7 @@ class ReservationListResource(Resource):
         data = []
 
         for reservation in reservations:
-            if not reservation.time < datetime.now():
+            if not reservation.date < datetime.now():
                 data.append(reservation.data())
 
         return {'data': data}, HTTPStatus.OK
@@ -43,7 +44,7 @@ class ReservationListResource(Resource):
             return {'message': 'Only hours between 16-20 can be booked'}, HTTPStatus.BAD_REQUEST
 
         if date_time_obj < datetime.now():
-            return {'message': 'Date already passed'}, HTTPStatus.BAD_REQUEST
+            return {'message': 'Date already passed'}, HTTPStatus.BAD_REQUEST, print(date_time_obj)
 
         if not is_valid_date(date_time_obj.year, date_time_obj.month, date_time_obj.day):
             return {'not a real date'}, HTTPStatus.BAD_REQUEST
@@ -51,11 +52,17 @@ class ReservationListResource(Resource):
         if date_time_obj.weekday() > 5:
             return {'message': 'Room cant be reserved for the weekend'}, HTTPStatus.BAD_REQUEST
 
-        if Reservation.check_booked(date_time_obj, json_data['time'], json_data['room']):
+        if Reservation.get_by_date_time_room(date_time_obj, json_data['time'], json_data['room']):
             return {'message': 'Already booked'}, HTTPStatus.BAD_REQUEST
 
-        reservation = Reservation(name=json_data['name'], user_id=current_user, room=json_data['room'],
-                                  description=json_data['description'], date=date_time_obj, time=json_data['time'])
+        reservation = Reservation(
+        name=json_data['name'], 
+        user_id=current_user, 
+        room=json_data['room'],
+        description=json_data['description'],
+        date=date_time_obj,
+        time=json_data['time'])
+
         reservation.save()
         return reservation.data(), HTTPStatus.CREATED
 

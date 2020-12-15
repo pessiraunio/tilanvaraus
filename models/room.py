@@ -21,6 +21,10 @@ class Room(db.Model):
     def get_all_rooms(cls):
         return cls.query.all()
 
+    @classmethod
+    def get_by_name(cls, name):
+        return cls.query.filter_by(name=name).all()
+
     def save(self):
         db.session.add(self)
         db.session.commit()

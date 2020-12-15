@@ -21,3 +21,8 @@
 - ROOM idtä ei saa tällähetkellä nollattua (room id pysyy samana vaikka huoneita poistaa)
 
 ----14.12 - Pessi Raunio-----
+
+
+- Varauksen poistaminen ei toimi tälllähtekellä. utf - 8 encoding ulinaa ...
+
+----15.12 - Kaikki -----
