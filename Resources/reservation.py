@@ -111,7 +111,32 @@ class ReservationResource(Resource):
         return {}, HTTPStatus.NO_CONTENT
 
     def get(self, room, date):
-        reservations = Reservation.get_by_date_room(date, room)
+        reservations = Reservation.get_by_date_room(date=date, room=room)
+        data = []
+
+        for reservation in reservations:
+            data.append(reservation.data())
+
+        return {'data': data}, HTTPStatus.OK
+
+
+class ReservationRoomResource(Resource):
+
+    def get(self, room_name):
+        reservations = Reservation.get_by_room(room=room_name)
+        data = []
+
+        for reservation in reservations:
+            data.append(reservation.data())
+
+        return {'data': data}, HTTPStatus.OK
+
+
+class ReservationDateResource(Resource):
+
+    def get(self, date_string):
+        date_time_obj = datetime.strptime(date_string, '%d%m%y')
+        reservations = Reservation.get_by_date(date=date_time_obj)
         data = []
 
         for reservation in reservations:

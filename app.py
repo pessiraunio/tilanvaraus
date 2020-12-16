@@ -8,7 +8,8 @@ from extensions import jwt
 from resources.user import User, UserListResource, UserResource, UserRoomListResource, MeResource
 from resources.token import TokenResource, RefreshResource, RevokeResource
 from resources.room import RoomListResource, RoomResource, RoomListedResource
-from resources.reservation import ReservationListResource, ReservationResource
+from resources.reservation import ReservationListResource, ReservationResource, \
+    ReservationRoomResource, ReservationDateResource
 
 
 
@@ -53,6 +54,13 @@ def register_resources(app):
 
     api.add_resource(ReservationListResource, '/reservations')
     api.add_resource(ReservationResource, '/reservations/<int:reservation_id>')
+
+
+    #T -- Lisäsin nämä
+    api.add_resource(ReservationDateResource, '/reservations/date/<string:date_string>')
+    api.add_resource(ReservationRoomResource, '/reservations/room/<string:room_name>')
+
+
 
     #api.add_resource(Reservation, /reservations/'huoneenimistring'/'aika string'2.3.2020,32:23.232313<)
     #lisätään näin ^^
