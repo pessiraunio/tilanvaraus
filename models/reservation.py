@@ -20,9 +20,15 @@ class Reservation(db.Model):
     user_id = db.Column(db.Integer(), db.ForeignKey("user.id"))
 
     def data(self):
-        return {'id': self.id, 'name': self.name, 'description': self.description,
-                'date': self.date.strftime("%d/%m/%y"), 'time': self.time,
-                'user': User.get_by_id(self.user_id).username, 'room': self.room}
+        return {
+            'id': self.id, 
+            'name': self.name, 
+            'description': self.description,
+            'date': self.date.strftime("%d/%m/%y"), 
+            'time': self.time,
+            'user': User.get_by_id(self.user_id).username, 
+            'room': self.room
+            }
 
     #roomreservation_id = db.Column(db.Integer(), db.ForeignKey("room.id"))
     #Linkataan reservatio > user settikeijo Tino tekee

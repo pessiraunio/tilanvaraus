@@ -92,18 +92,24 @@ class RoomResource(Resource):
 
         json_data = request.get_json()
 
+        room = Room.get_by_id(room_id=room_id)
+
+        current_user = get_jwt_identity()
+
         data, errors = room_schema.load(data=json_data, partial=('name',))
 
         if errors:
-            return {'message': 'Room not found'}, HTTPStatus.FORBIDDEN
-
-        room = Room.get_by_id(room_id=room_id)
+            return {'message': 'Room not found', 'errors': errors}, HTTPStatus.BAD_REQUEST
 
         if room is None:
-            return {'mesage': 'Room not found'}, HTTPStatus.NOT_FOUND
+            return {'message': 'Room not found'}, HTTPStatus.NOT_FOUND
 
+        if current_user != 1:
+            return {'message': 'Access is not allowed'}, HTTPStatus.FORBIDDEN
 
         room.name = data.get('name') or room.name
+        room.description = data.get('description') or room.description
+        room.location = data.get('location') or room.location
 
         room.save()
 
