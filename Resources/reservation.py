@@ -70,30 +70,6 @@ class ReservationListResource(Resource):
 class ReservationResource(Resource):
 
     @jwt_required
-    def put(self, reservation_id):
-
-        json_data = request.get_json()
-
-        reservation = Reservation.get_by_id(reservation_id=reservation_id)
-
-        if reservation is None:
-            return {'message': 'reservation not found'}, HTTPStatus.NOT_FOUND
-
-        current_user = get_jwt_identity()
-
-        if current_user != reservation.user_id:
-            return {'message': 'Access is not allowed'}, HTTPStatus.FORBIDDEN
-
-        reservation.room_id = json_data['room_id']
-        reservation.description = json_data['description']
-        reservation.time = json_data['time']
-        reservation.date = json_data['date']
-
-        reservation.save()
-
-        return reservation.data(), HTTPStatus.OK
-
-    @jwt_required
     def delete(self, reservation_id):
 
         reservation = Reservation.get_by_id(reservation_id=reservation_id)
@@ -110,14 +86,13 @@ class ReservationResource(Resource):
 
         return {}, HTTPStatus.NO_CONTENT
 
-    def get(self, room, date):
-        reservations = Reservation.get_by_date_room(date=date, room=room)
-        data = []
+    def get(self, reservation_id):
+        reservation = Reservation.get_by_id(reservation_id=reservation_id)
 
-        for reservation in reservations:
-            data.append(reservation.data())
+        if reservation is None:
+            return {'message': 'Reservation not found'}, HTTPStatus.NOT_FOUND
 
-        return {'data': data}, HTTPStatus.OK
+        return reservation.data(), HTTPStatus.OK
 
 
 class ReservationRoomResource(Resource):
@@ -137,6 +112,19 @@ class ReservationDateResource(Resource):
     def get(self, date_string):
         date_time_obj = datetime.strptime(date_string, '%d%m%y')
         reservations = Reservation.get_by_date(date=date_time_obj)
+        data = []
+
+        for reservation in reservations:
+            data.append(reservation.data())
+
+        return {'data': data}, HTTPStatus.OK
+
+
+class ReservationRoomDateResource(Resource):
+
+    def get(self, room_name, date_string):
+        date_time_obj = datetime.strptime(date_string, '%d%m%y')
+        reservations = Reservation.get_by_date_room(date=date_time_obj, room=room_name)
         data = []
 
         for reservation in reservations:

@@ -9,7 +9,7 @@ from resources.user import User, UserListResource, UserResource, UserRoomListRes
 from resources.token import TokenResource, RefreshResource, RevokeResource
 from resources.room import RoomListResource, RoomResource, RoomListedResource
 from resources.reservation import ReservationListResource, ReservationResource, \
-    ReservationRoomResource, ReservationDateResource
+    ReservationRoomResource, ReservationDateResource, ReservationRoomDateResource
 
 
 
@@ -53,12 +53,14 @@ def register_resources(app):
     api.add_resource(RoomListedResource, '/rooms/<int:room_id>/listed')
 
     api.add_resource(ReservationListResource, '/reservations')
-    api.add_resource(ReservationResource, '/reservations/<int:reservation_id>')
+    api.add_resource(ReservationResource, '/reservations/<int:reservation_id>') # T -- Tän pitäis nyt toimia
 
 
     #T -- Lisäsin nämä
     api.add_resource(ReservationDateResource, '/reservations/date/<string:date_string>')
     api.add_resource(ReservationRoomResource, '/reservations/room/<string:room_name>')
+    #T -- Aamu lisäys
+    api.add_resource(ReservationRoomDateResource, 'reservations/<string:room_name>/<string:date_string>')
 
 
 

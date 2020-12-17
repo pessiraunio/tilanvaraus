@@ -57,7 +57,6 @@ class Reservation(db.Model):
     @classmethod
     def get_by_room(cls, room):
         return cls.query.filter_by(room=room).all()
-    
 
     def save(self):
         db.session.add(self)
